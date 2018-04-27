@@ -82,30 +82,24 @@ def main():
     assert len(X) == len(y)
 
     # split data to train and test sets
-    (X_train, Y_train), (X_test, Y_test) = train_test_split(X, y, split=0.2)
+    (X_train, Y_train), (X_test, Y_test) = train_test_split(X, y, split=0.005)
     
-
     num_output_classes = Y_train.shape[1]
-
     batch_size = 128
     num_epoch = 30
-
     model = Sequential()
-
     # convolution 1
     model.add(Convolution2D(64, 3, 3, border_mode='valid',
                             input_shape=(image_width, image_height, 3),
                             dim_ordering=DIM_ORDERING))
     model.add(Activation('relu'))
     model.add(BatchNormalization())
-
     # convolution 2
     model.add(Convolution2D(32, 3, 3, border_mode='valid',
                             dim_ordering=DIM_ORDERING))
     model.add(Activation('relu'))
     model.add(BatchNormalization())
     model.add(MaxPooling2D(pool_size=(2, 2), dim_ordering=DIM_ORDERING))
-
     # convolution 3
     model.add(Convolution2D(32, 3, 3, border_mode='valid',
                             dim_ordering=DIM_ORDERING))
@@ -113,16 +107,12 @@ def main():
     model.add(BatchNormalization())
     model.add(MaxPooling2D(pool_size=(2, 2), dim_ordering=DIM_ORDERING))
     model.add(Dropout(0.2))
-
-    # flattening
     model.add(Flatten())
-
     # fully connected
     model.add(Dense(600))
     model.add(Activation('relu'))
     model.add(BatchNormalization())
     model.add(Dropout(0.2))
-
     # output layer
     model.add(Dense(num_output_classes))
     model.add(Activation('softmax'))
